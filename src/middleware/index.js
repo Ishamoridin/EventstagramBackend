@@ -78,6 +78,42 @@ exports.validateEvent = (req, res, next) => {
     }
 };
 
-exports.tokenCheck = (req, res, next) => {
-    
+exports.tokenCheck = async (req, res, next) => {
+    try {
+        const token = req.header("Authorization").replace("Bearer ", "");
+
+        if (!token){
+            console.log("No token passed");
+            throw new Error ("No token passed")
+        };
+
+        const decodedToken = await jwt.verify(token, process.env.SECRET);
+        const user = await User.findById(decodedToken._id);
+        console.log(user);
+        if(user) {
+            req.authUser = user;
+            next()
+        } else {
+            throw new Error ("User is unauthorised")
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: error.message })
+    }
+}
+exports.comparePass = async(req, res, next) => {
+    try {
+        req.user = await User.findOne({username: req.body.username});
+        console.log(req.body.password, req.user.password);
+        if (req.user && await bcrypt.compare(req.body.password, req.user.password)){
+            console.log("username exists and plain text password matches hashed password");
+            next()
+        }
+        else {
+            throw new Error ("Incorrect username or password")
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: error.message})
+    }
 }
