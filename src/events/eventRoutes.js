@@ -1,9 +1,9 @@
 const { Router } = require(`express`);
-const userRouter = Router();
+const eventRouter = Router();
 const { validateEvent } = require('../middleware');
 const { createEvent, readEvents, updateEvent, deleteEvent } = require(`./eventControllers`)
-userRouter.post("/createEvent", validateEvent, createEvent);
-userRouter.get("/readEvents", readEvents);
-userRouter.patch("/updateEvent", updateEvent);
-userRouter.delete("/deleteEvent", deleteEvent);
-module.exports = userRouter
+eventRouter.post("/createEvent", validateEvent, createEvent);
+eventRouter.get("/readEvents", readEvents);
+eventRouter.patch("/updateEvent", updateEvent);
+eventRouter.delete("/deleteEvent", deleteEvent);
+module.exports = eventRouter
