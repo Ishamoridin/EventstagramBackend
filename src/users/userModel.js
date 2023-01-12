@@ -1,7 +1,7 @@
 const {DataTypes} = require('sequelize');
 const {openSequelizeConnection} = require('../db/connection');
 
-const User = openSequelizeConnection.define("User", {
+const SiteUser = openSequelizeConnection.define("SiteUsers", {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -17,6 +17,7 @@ const User = openSequelizeConnection.define("User", {
         allowNUll: false
     }
 
-})
-
-module.exports = User
+},
+{freezeTablenames: true})
+SiteUser.sync()
+module.exports = SiteUser

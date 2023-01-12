@@ -1,7 +1,7 @@
 const {DataTypes} = require('sequelize');
 const {openSequelizeConnection} = require('../db/connection');
 
-const Event = openSequelizeConnection.define("Event", {
+const Event = openSequelizeConnection.define("Events", {
     eventName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -29,8 +29,8 @@ const Event = openSequelizeConnection.define("Event", {
     instance: {
         type: DataTypes.TINYINT,
         defaultValue: 1,
-        allowNull: false
+        allowNull: false,
     }
 })
-
+Event.sync()
 module.exports = Event
