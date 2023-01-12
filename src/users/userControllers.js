@@ -15,7 +15,7 @@ exports.createUser = async(req, res) => {
     try {
         const newUser = await User.create(userObj);
         console.log(`created new user: ${newUser}`);
-        res.status(200).send({updated: u})
+        res.status(200).send({username: newUser.username})
     } catch (error) {
         console.log(error);
         res.status(500).send({ error: error.message})
@@ -38,7 +38,8 @@ exports.updateUser = async(req, res) => {
         const updatedUser = await User.update(userObj, { where: searchFilter }).then((result) => {
             return result
         });
-        console.log(`updated user: ${updatedUser}`)
+        console.log(`updated user: ${updatedUser}`);
+        res.status(200).send({ updated: updatedUser })
     } catch (error) {
         console.log(error);
 
@@ -50,7 +51,7 @@ exports.deleteUser = async(req, res) => {
         const deletedUser = await User.destroy({ where: userObj }).then((result) => {
             return result});
             console.log(`deleted user: ${deletedUser}`)
-            return deletedUser;
+            res.status(200).send({deleted: deletedUser})
     } catch (error) {
         console.log(error);
         res.status(500).send({ error: error.message})

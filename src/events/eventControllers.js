@@ -8,40 +8,46 @@ keyChecker = (input) => {
     });
     return output
 }
-exports.createEvent = async(eventObj) => {
+exports.createEvent = async(req, res) => {
+    const eventObj = req.body
     try {
         const newEvent = await Event.create(eventObj);
-        console.log(`created new event: ${newEvent}`)
+        console.log(`created new event: ${newEvent}`);
+        res.status(201).send({created: newEvent})
     } catch (error) {
         console.log(error)
     }
 };
-exports.readEvents = async(eventObj) => {
+exports.readEvents = async(req, res) => {
+    const eventObj = req.body
     try {
         const results = await Event.findAll(eventObj);
-        return results
+        res.status(200).send({result: results})
     } catch (error) {
         console.log(error)
     }
 };
-exports.updateEvent = async(eventObj, eventFilter) => {
+exports.updateEvent = async(req, res) => {
+    const eventObj = req.body.newEvent, eventFilter = req.body.oldEvent
     try {
         const searchFilter = keyChecker(eventFilter);
         const updatedEvent = await Event.update(eventObj, { where: searchFilter }).then((result) => {
             return result
         });
-        console.log(`updated event: ${updatedEvent}`)
+        console.log(`updated event: ${updatedEvent}`);
+        res.status(200).send({updated: updatedEvent})
     } catch (error) {
         console.log(error)
     }
 };
-exports.deleteEvent = async(eventObj) => {
+exports.deleteEvent = async(req, res) => {
+    const eventObj = req.body
     try {
         const deletedEvent = await User.destroy({ where: eventObj }).then((result) => {
             return result
         });
         console.log(`deleted event: ${deletedEvent}`)
-        return deletedEvent
+        res.status(200).send({deleted: deletedEvent})
     } catch (error) {
         console.log(error)
     }
