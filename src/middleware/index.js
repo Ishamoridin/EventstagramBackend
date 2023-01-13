@@ -64,13 +64,13 @@ exports.validateEvent = (req, res, next) => {
             if (
                 body.eventName.match(nameTest) &&
                 body.description.match(descriptionTest) &&
-                (body.endTime-body.startTime >= 0)
+                (body.endTime >= body.startTime)
             ) {
                 next()
             }
             else if (!body.eventName.match(nameTest)){throw new Error ('Validation failed on event name.')}
             else if (!body.description.match(descriptionTest)){throw new Error ('Validation failed on event description.')}
-            else if (!(body.endTime-body.startTime >= 0)){throw new Error ('Events cannot start after they end or end before they start.')}
+            else if (!(body.endTime >= body.startTime)){throw new Error ('Events cannot start after they end or end before they start.')}
         }
     } catch (error) {
         console.log(error);
