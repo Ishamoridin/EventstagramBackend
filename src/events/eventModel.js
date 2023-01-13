@@ -5,6 +5,7 @@ const Event = openSequelizeConnection.define("Events", {
     eventName: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
     },
     startTime: {
         type: DataTypes.DATE,
@@ -25,11 +26,6 @@ const Event = openSequelizeConnection.define("Events", {
     capacity: {
         type: DataTypes.INTEGER,
         defaultValue: 5
-    },
-    instance: {
-        type: DataTypes.TINYINT,
-        defaultValue: 1,
-        allowNull: false,
     }
 })
 Event.sync()

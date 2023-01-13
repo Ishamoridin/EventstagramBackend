@@ -1,5 +1,5 @@
 const { JsonWebTokenError } = require('jsonwebtoken');
-const User = require('./userModel');
+const SiteUser = require('./userModel');
 require('dotenv').config()
 
 keyChecker = (input) => {
@@ -13,7 +13,7 @@ keyChecker = (input) => {
 exports.createUser = async(req, res) => {
     const userObj = req.body
     try {
-        const newUser = await User.create(userObj);
+        const newUser = await SiteUser.create(userObj);
         console.log(`created new user: ${newUser}`);
         res.status(200).send({username: newUser.username})
     } catch (error) {
@@ -24,7 +24,7 @@ exports.createUser = async(req, res) => {
 exports.readUsers = async(req, res) => {
     const userObj = req.body
     try {
-        const results = await User.findAll(userObj);
+        const results = await SiteUser.findAll(userObj);
         res.status(200).send({users: users.map((user) => {return user.username})})
     } catch (error) {
         console.log(error);
@@ -35,7 +35,7 @@ exports.updateUser = async(req, res) => {
     const userObj = req.body.updatedUser, userFilter = req.body.userFilter
     try {
         const searchFilter = keyChecker(userFilter);
-        const updatedUser = await User.update(userObj, { where: searchFilter }).then((result) => {
+        const updatedUser = await SiteUser.update(userObj, { where: searchFilter }).then((result) => {
             return result
         });
         console.log(`updated user: ${updatedUser}`);
@@ -48,7 +48,7 @@ exports.updateUser = async(req, res) => {
 exports.deleteUser = async(req, res) => {
     const userObj = req.body
     try {
-        const deletedUser = await User.destroy({ where: userObj }).then((result) => {
+        const deletedUser = await SiteUser.destroy({ where: userObj }).then((result) => {
             return result});
             console.log(`deleted user: ${deletedUser}`)
             res.status(200).send({deleted: deletedUser})
@@ -66,7 +66,7 @@ exports.loginUser = async(req, res) => {
             res.status(200).send({username: req.authUser.username});
             return
         }
-        const user = await User.findOne({username: req.body.username});
+        const user = await SiteUser.findOne({username: req.body.username});
         console.log(user);
         console.log("Username found in database");
         const token = await jwt.sign({_id: user._id}, process.env.SECRET);

@@ -50,8 +50,8 @@ exports.validateUser = (req, res, next) => {
 };
 
 exports.validateEvent = (req, res, next) => {
-    const nameTest = /^[a-zA-Z0-9]{1,255}$/,
-    descriptionTest = /^[a-zA-Z0-9]{1,500}$/
+    const nameTest = /^[a-zA-Z0-9\s]{1,255}$/,
+    descriptionTest = /^[a-zA-Z0-9\s]{1,500}$/
     const body = req.body;
     try {
         if (

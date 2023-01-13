@@ -9,7 +9,8 @@ keyChecker = (input) => {
     return output
 }
 exports.createEvent = async(req, res) => {
-    const eventObj = req.body
+    const eventObj = req.body;
+    console.log(eventObj)
     try {
         const newEvent = await Event.create(eventObj);
         console.log(`created new event: ${newEvent}`);
