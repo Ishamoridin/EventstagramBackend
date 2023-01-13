@@ -25,7 +25,7 @@ exports.readUsers = async(req, res) => {
     const userObj = req.body
     try {
         const results = await SiteUser.findAll(userObj);
-        res.status(200).send({users: users.map((user) => {return user.username})})
+        res.status(200).send({users: results.map((user) => {return user.username})})
     } catch (error) {
         console.log(error);
         res.status(500).send({ error: error.message})
