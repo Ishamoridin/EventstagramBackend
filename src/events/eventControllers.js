@@ -20,7 +20,7 @@ exports.createEvent = async(req, res) => {
     }
 };
 exports.readEvents = async(req, res) => {
-    const eventObj = req.body
+    const eventObj = req.body || {}
     try {
         const results = await Event.findAll(eventObj);
         res.status(200).send({result: results})
