@@ -26,6 +26,11 @@ const Event = openSequelizeConnection.define("Events", {
     capacity: {
         type: DataTypes.INTEGER,
         defaultValue: 5
+    },
+    eventOwner: {
+        type: DataTypes.INTEGER,
+        references: 'SiteUsers',
+        referencesKey: 'username'
     }
 })
 Event.sync()
