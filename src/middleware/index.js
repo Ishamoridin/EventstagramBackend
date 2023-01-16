@@ -103,7 +103,7 @@ exports.tokenCheck = async (req, res, next) => {
 }
 exports.comparePass = async(req, res, next) => {
     try {
-        req.user = await User.findOne({username: req.body.username});
+        req.user = await User.findOne({where: {username: req.body.username}});
         console.log(req.body.password, req.user.password);
         if (req.user && await bcrypt.compare(req.body.password, req.user.password)){
             console.log("username exists and plain text password matches hashed password");
