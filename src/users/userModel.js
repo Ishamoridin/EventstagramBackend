@@ -5,7 +5,7 @@ const SiteUser = openSequelizeConnection.define("SiteUsers", {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
     },
     email: {
         type: DataTypes.STRING,
@@ -14,7 +14,7 @@ const SiteUser = openSequelizeConnection.define("SiteUsers", {
     },
     password: {
         type: DataTypes.STRING,
-        allowNUll: false
+        allowNull: false
     }
 
 },

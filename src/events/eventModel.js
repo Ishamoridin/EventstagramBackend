@@ -28,10 +28,15 @@ const Event = openSequelizeConnection.define("Events", {
         defaultValue: 5
     },
     eventOwner: {
-        type: DataTypes.INTEGER,
-        references: 'SiteUsers',
-        referencesKey: 'username'
+        type: DataTypes.STRING,
+        allowNull: false,
+        references:{
+            model: 'SiteUsers',
+            key: 'username'
+        }
     }
-})
+},
+{freezeTablenames: true})
+// Event.drop()
 Event.sync()
 module.exports = Event
