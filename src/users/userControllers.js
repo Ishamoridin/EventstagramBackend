@@ -1,4 +1,4 @@
-const { JsonWebTokenError } = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const SiteUser = require('./userModel');
 require('dotenv').config()
 
@@ -66,7 +66,7 @@ exports.loginUser = async(req, res) => {
             res.status(200).send({username: req.authUser.username});
             return
         }
-        const user = await SiteUser.findOne({username: req.body.username});
+        const user = await SiteUser.findOne({where: {username: req.body.username}});
         console.log(user);
         console.log("Username found in database");
         const token = await jwt.sign({_id: user._id}, process.env.SECRET);
