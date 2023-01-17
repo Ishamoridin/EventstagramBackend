@@ -88,7 +88,7 @@ exports.tokenCheck = async (req, res, next) => {
         };
 
         const decodedToken = await jwt.verify(token, process.env.SECRET);
-        const user = await User.findById(decodedToken._id);
+        const user = await User.findByPk(decodedToken._id);
         console.log(user);
         if(user) {
             req.authUser = user;
