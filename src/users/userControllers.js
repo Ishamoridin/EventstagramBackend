@@ -30,10 +30,10 @@ exports.createUser = async (req, res) => {
 exports.readUsers = async (req, res) => {
   const userObj = req.body;
   try {
-    const results = await SiteUser.findAll(userObj);
+    const results = await SiteUser.findAll({where: userObj});
     res.status(200).send({
       users: results.map((user) => {
-        return user.username;
+        return user;
       }),
     });
   } catch (error) {
