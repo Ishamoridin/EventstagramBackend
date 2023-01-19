@@ -69,6 +69,7 @@ exports.updateUser = async (req, res) => {
       siteUser.email = userObj.email
       const updatedUser = await siteUser.save();
       console.log(updatedUser)
+      res.status(200).send({ updated: updatedUser })
   } catch (error) {
     console.log(error);
   }
