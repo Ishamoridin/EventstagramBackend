@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 exports.hashPass = async (req, res, next) => {
   let password;
   if (req.body.password){password=req.body.password};
-  if (req.body.userObj.password){password=req.body.userObj.password}
+  if (req.body.userObj){password=req.body.userObj.password}
   try {
     req.body.password = await bcrypt.hash(password, 10);
     next();
