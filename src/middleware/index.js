@@ -58,8 +58,10 @@ exports.validateUser = (req, res, next) => {
 
 exports.validateEvent = (req, res, next) => {
   const nameTest = /^[a-zA-Z0-9\s.,!?'",.:;-_()]{1,100}$/,
-    descriptionTest = /^[a-zA-Z0-9\s.,!?'",.:;-_()]{1,255}$/;
+  descriptionTest = /^[a-zA-Z0-9\s.,!?'",.:;-_()]{1,255}$/;
   const body = req.body;
+  const endTime = new Date(body.endTime),
+        startTime = new Date(body.startTime)
   try {
     if (
       body.eventName &&
@@ -71,14 +73,14 @@ exports.validateEvent = (req, res, next) => {
       if (
         body.eventName.match(nameTest) &&
         body.description.match(descriptionTest) &&
-        body.endTime >= body.startTime
+        endTime >= startTime
       ) {
         next();
       } else if (!body.eventName.match(nameTest)) {
         throw new Error("Validation failed on event name.");
       } else if (!body.description.match(descriptionTest)) {
         throw new Error("Validation failed on event description.");
-      } else if (!(body.endTime >= body.startTime)) {
+      } else if (!(endTime >= startTime)) {
         throw new Error(
           "Events cannot start after they end or end before they start."
         );
