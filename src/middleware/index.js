@@ -4,8 +4,11 @@ const Event = require("../events/eventModel");
 const jwt = require("jsonwebtoken");
 
 exports.hashPass = async (req, res, next) => {
+  let password;
+  if (req.body.password){password=req.body.password};
+  if (req.body.userObj.password){password=req.body.userObj.password}
   try {
-    req.body.password = await bcrypt.hash(req.body.password, 10);
+    req.body.password = await bcrypt.hash(password, 10);
     next();
   } catch (error) {
     console.log(error);
@@ -55,7 +58,7 @@ exports.validateUser = (req, res, next) => {
 
 exports.validateEvent = (req, res, next) => {
   const nameTest = /^[a-zA-Z0-9\s]{1,255}$/,
-    descriptionTest = /^[a-zA-Z0-9\s]{1,500}$/;
+    descriptionTest = /^[a-zA-Z0-9\s.,!?:;-_()]{1,255}$/;
   const body = req.body;
   try {
     if (
@@ -111,18 +114,31 @@ exports.tokenCheck = async (req, res, next) => {
   }
 };
 exports.comparePass = async (req, res, next) => {
+  let username, password;
+  console.log(req.body)
+  if (req.body.password){password=req.body.password};
+  if (req.body.username){username=req.body.username};
+  console.log("Username - ", username, "Password - ", password)
+  if (req.body.userFilter)
+    {
+      password=req.body.userFilter.password;
+      username=req.body.userFilter.username
+    };
+    console.log("Username - ", username, "Password - ", password)
   try {
-    req.user = await User.findOne({ where: { username: req.body.username } });
-    console.log(req.body.password, req.user.password);
+    req.user = await User.findOne({ where: { username: username } });
+    console.log(password, req.user.password);
     if (
       req.user &&
-      (await bcrypt.compare(req.body.password, req.user.password))
+      ((await bcrypt.compare(password, req.user.password)) || password === req.user.password)
     ) {
       console.log(
-        "username exists and plain text password matches hashed password"
+        "username exists and passwords match"
       );
+      console.log("proceeding past comparePass")
       next();
     } else {
+      console.log("Passwords are", password, req.user.password)
       throw new Error("Incorrect username or password");
     }
   } catch (error) {

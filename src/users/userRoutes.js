@@ -5,7 +5,7 @@ const { createUser, readUsers, updateUser, deleteUser, loginUser } = require(`./
 userRouter.post("/createUser", validateUser, hashPass, createUser);
 userRouter.post("/readUsers", readUsers);
 userRouter.post("/login", comparePass, loginUser);
-userRouter.patch("/updateUser", updateUser);
+userRouter.patch("/updateUser", comparePass, hashPass, updateUser);
 userRouter.delete("/deleteUser", deleteUser);
 userRouter.get("/authCheck", tokenCheck, loginUser)
 module.exports = userRouter

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const SiteUser = require("./userModel");
 require("dotenv").config();
+const bcrypt = require("bcrypt")
 
 keyChecker = (input) => {
   let output = {};
@@ -28,12 +29,14 @@ exports.createUser = async (req, res) => {
   }
 };
 exports.readUsers = async (req, res) => {
+  console.log(req)
   const userObj = req.body;
+  const filter = userObj.username ? userObj.username : ""
   try {
-    const results = await SiteUser.findAll({where: userObj});
+    const results = await SiteUser.findAll({where: {username: filter}});
     res.status(200).send({
       users: results.map((user) => {
-        return user;
+        console.log(user);return user;
       }),
     });
   } catch (error) {
@@ -42,17 +45,30 @@ exports.readUsers = async (req, res) => {
   }
 };
 exports.updateUser = async (req, res) => {
-  const userObj = req.body.updatedUser,
+  // console.log(req);
+  const userObj = req.body.userObj,
     userFilter = req.body.userFilter;
+    console.log("userObj = ", userObj);
+    console.log("userFilter = ", userFilter)
   try {
-    const searchFilter = keyChecker(userFilter);
-    const updatedUser = await SiteUser.update(userObj, {
-      where: searchFilter,
-    }).then((result) => {
-      return result;
-    });
-    console.log(`updated user: ${updatedUser}`);
-    res.status(200).send({ updated: updatedUser });
+    // const searchFilter = keyChecker(userFilter);console.log(searchFilter, "searchFilter above");
+    // const updatedUser = await SiteUser.update(userObj, {
+    //   where: searchFilter,
+    // }).then((result) => {
+    //   return result;
+    // });
+    // console.log(`updated user: ${updatedUser}`);
+    // res.status(200).send({ updated: updatedUser });
+      const siteUser = await SiteUser.findOne({where: {username: req.body.userFilter.username}});
+      if (!siteUser) {
+          throw Error(`User not updated. username: ${req.body.userObj ? req.body.userObj.username : req.body.username}`);
+      }
+
+      siteUser.username = userObj.username;
+      siteUser.password = userObj.password;
+      siteUser.email = userObj.email
+      const updatedUser = await siteUser.save();
+      console.log(updatedUser)
   } catch (error) {
     console.log(error);
   }
