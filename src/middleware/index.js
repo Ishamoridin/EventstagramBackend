@@ -57,8 +57,8 @@ exports.validateUser = (req, res, next) => {
 };
 
 exports.validateEvent = (req, res, next) => {
-  const nameTest = /^[a-zA-Z0-9\s.,!?'",.:;-_()]{1,100}$/,
-  descriptionTest = /^[a-zA-Z0-9\s.,!?'",.:;-_()]{1,255}$/;
+  const nameTest = /^[a-zA-Z0-9\s.,?'"@#!£$%^&*,.:;-_()]{1,100}$/,
+  descriptionTest = /^[a-zA-Z0-9\s.,?'"@#!£$%^&*,.:;-_()]{1,255}$/;
   const body = req.body;
   const endTime = new Date(body.endTime),
         startTime = new Date(body.startTime)
